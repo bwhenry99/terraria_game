@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 4.3.1)
 
+if(MSVC) 
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Release>:Release>")
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 project("Terrario")
 set(CMAKE_CXX_STANDARD 20)
-add_executable("Terrario" "src/main.cpp")
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+add_executable("${CMAKE_PROJECT_NAME}")
+
+file(GLOB ${CMAKE_PROJECT_NAME}_SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB ${CMAKE_PROJECT_NAME}_HRDS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp")
+
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${${CMAKE_PROJECT_NAME}_SRCS} PUBLIC ${${CMAKE_PROJECT_NAME}_HDRS})
+
+target_include_directories("${CMAKE_PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
