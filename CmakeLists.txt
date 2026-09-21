@@ -9,12 +9,14 @@ project("Terrario")
 set(CMAKE_CXX_STANDARD 20)
 add_executable("${CMAKE_PROJECT_NAME}")
 
-file(GLOB ${CMAKE_PROJECT_NAME}_SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-file(GLOB ${CMAKE_PROJECT_NAME}_HDRS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp")
+file(GLOB_RECURSE ${CMAKE_PROJECT_NAME}_SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE ${CMAKE_PROJECT_NAME}_HDRS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp")
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${${CMAKE_PROJECT_NAME}_SRCS} PUBLIC ${${CMAKE_PROJECT_NAME}_HDRS})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/src" FILES ${${CMAKE_PROJECT_NAME}_SRCS} ${${CMAKE_PROJECT_NAME}_HDRS})
 
-target_include_directories("${CMAKE_PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
+target_include_directories("${CMAKE_PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/game_layer")
+target_include_directories("${CMAKE_PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/platform")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/third_party/raylib-6.0_win64_msvc16/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/third_party/imgui-1.89.7-docking/")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/third_party/rlImgui/")

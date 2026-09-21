@@ -3,6 +3,8 @@
 #include <imgui.h>
 #include <rlImGui.h>
 
+#include "GameManager.hpp"
+
 int main()
 {
     SetConfigFlags(ConfigFlags::FLAG_WINDOW_RESIZABLE);
@@ -11,8 +13,12 @@ int main()
     rlImGuiSetup(true);
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    GameManager game;
+    if (!game.Init())
+    {
+       return 0;
+    }
 
-    float property = 50.0f;
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -25,27 +31,7 @@ int main()
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
         ImGui::PopStyleColor(2);
 
-        DrawRectangle(75, 75, 100, 100, { 0, 255, 0, 255 });
-        DrawRectangle(50, 50, 100, 100, { 255, 0, 0, 255 });
-
-        DrawText("Hello Window", 128, 128, 24, RED);
-
-        ImGui::Begin("test");
-        ImGui::Text("Hello from imgui");
-        if (ImGui::Button("button"))
-        {
-           std::cout << property << std::endl;
-        }
-
-        ImGui::SliderFloat("slider", &property, 0, 100);
-        ImGui::End();
-
-        ImGui::Begin("window2");
-        if (ImGui::Button("button"))
-        {
-           std::cout << "hello from window 2" << std::endl;
-        }
-        ImGui::End();
+        game.Update();
 
         rlImGuiEnd();
         EndDrawing();
@@ -53,5 +39,6 @@ int main()
 
     rlImGuiShutdown();
     CloseWindow();
+    game.Close();
     return 0;
 }
