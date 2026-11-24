@@ -13,6 +13,8 @@ int main()
     rlImGuiSetup(true);
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    SetTargetFPS(120);
+
     GameManager game;
     if (!game.Init())
     {
