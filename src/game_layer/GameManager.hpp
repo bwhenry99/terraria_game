@@ -1,3 +1,4 @@
+#include "AssetManager.hpp"
 
 class GameManager
 {
@@ -8,5 +9,7 @@ public:
    bool Init();
    bool Update();
    void Close();
+
+   AssetManager mAssetManager;
 
 };

@@ -9,6 +9,14 @@ project("Terrario")
 set(CMAKE_CXX_STANDARD 20)
 add_executable("${CMAKE_PROJECT_NAME}")
 
+if(PRODUCTION_BUILD)
+  target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="./resources/")
+  target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=1)
+else()
+  target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+  target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=0)
+endif()
+
 file(GLOB_RECURSE ${CMAKE_PROJECT_NAME}_SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE ${CMAKE_PROJECT_NAME}_HDRS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp")
 
