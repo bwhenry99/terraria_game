@@ -13,6 +13,11 @@ bool GameManager::Init()
    mMap->GetBlockUnsafe(3, 3).blockType = Block::type::DIRT;
    mMap->GetBlockUnsafe(4, 4).blockType = Block::type::DIRT;
 
+   mCamera.target = { 0.0f, 0.0f };
+   mCamera.zoom = 50.0f;
+   mCamera.rotation = 0.0f;
+   mCamera.offset = { 0.0f, 0.0f };
+
    return true;
 }
 
@@ -20,6 +25,13 @@ bool GameManager::Update()
 {
    float deltaTime = GetFrameTime();
    if (deltaTime > 1.0 / 5.0) { deltaTime = 1.0 / 5.0; } //constrain dt to 5 fps
+
+   BeginMode2D(mCamera);
+
+   if (IsKeyDown(KEY_UP))    { mCamera.target.y -= 10.0f * deltaTime; }
+   if (IsKeyDown(KEY_DOWN))  { mCamera.target.y += 10.0f * deltaTime; }
+   if (IsKeyDown(KEY_LEFT))  { mCamera.target.x -= 10.0f * deltaTime; }
+   if (IsKeyDown(KEY_RIGHT)) { mCamera.target.x += 10.0f * deltaTime; }
 
    ClearBackground({ 75, 75, 150, 255 });
    for (unsigned int i = 0; i < cMAP_WIDTH; i++)
@@ -32,7 +44,7 @@ bool GameManager::Update()
             continue;
          }
 
-         float blockSize = 32.f;
+         float blockSize = 1.f;
          float x = i * blockSize;
          float y = j * blockSize;
 
@@ -43,6 +55,9 @@ bool GameManager::Update()
 
       }
    }
+
+   EndMode2D();
+
    return true;
 }
 

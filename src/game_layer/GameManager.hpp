@@ -18,6 +18,7 @@ public:
    void Close();
 
    AssetManager mAssetManager;
+   Camera2D mCamera;
    Map* mMap = nullptr;
 
 };
