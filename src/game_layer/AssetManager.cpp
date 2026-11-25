@@ -2,5 +2,5 @@
 
 void AssetManager::LoadAllAssets()
 {
-   mDirtTexture = LoadTexture(RESOURCES_PATH "dirt.png");
+   mBlockTextureAtlas = LoadTexture(RESOURCES_PATH "textures.png");
 }

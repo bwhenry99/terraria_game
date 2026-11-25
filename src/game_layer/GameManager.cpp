@@ -2,16 +2,18 @@
 
 #include <raylib.h>
 
+Rectangle GetBlockTexture(Block::type aType, int aIndex);
+
 bool GameManager::Init()
 {
    mAssetManager.LoadAllAssets();
    mMap = new Map(cMAP_WIDTH, cMAP_HEIGHT);
 
    mMap->GetBlockUnsafe(0, 0).blockType = Block::type::DIRT;
-   mMap->GetBlockUnsafe(1, 1).blockType = Block::type::DIRT;
-   mMap->GetBlockUnsafe(2, 2).blockType = Block::type::DIRT;
-   mMap->GetBlockUnsafe(3, 3).blockType = Block::type::DIRT;
-   mMap->GetBlockUnsafe(4, 4).blockType = Block::type::DIRT;
+   mMap->GetBlockUnsafe(1, 1).blockType = Block::type::IRON;
+   mMap->GetBlockUnsafe(2, 2).blockType = Block::type::ICE;
+   mMap->GetBlockUnsafe(3, 3).blockType = Block::type::GOLD_BLOCK;
+   mMap->GetBlockUnsafe(4, 4).blockType = Block::type::GRASS;
 
    mCamera.target = { 0.0f, 0.0f };
    mCamera.zoom = 50.0f;
@@ -38,7 +40,8 @@ bool GameManager::Update()
    {
       for (unsigned int j = 0; j < cMAP_HEIGHT; j++)
       {
-         if (mMap->GetBlockUnsafe(i, j).blockType == Block::AIR)
+         Block block = mMap->GetBlockUnsafe(i, j);
+         if (block.blockType == Block::AIR)
          {
             // don't need to do anything for air blocks, proceed to next block
             continue;
@@ -49,8 +52,8 @@ bool GameManager::Update()
          float y = j * blockSize;
 
          
-         DrawTexturePro(mAssetManager.mDirtTexture,
-            Rectangle{ 0.0, 0.0, static_cast<float>(mAssetManager.mDirtTexture.width), static_cast<float>(mAssetManager.mDirtTexture.height) },
+         DrawTexturePro(mAssetManager.mBlockTextureAtlas,
+            GetBlockTexture((Block::type)block.blockType, 0),
             Rectangle{ x, y, blockSize, blockSize }, { 0,0 }, 0.0, WHITE);
 
       }
@@ -64,4 +67,9 @@ bool GameManager::Update()
 void GameManager::Close()
 {
 
+}
+
+Rectangle GetBlockTexture(Block::type aType, int aIndex)
+{
+   return Rectangle{ (int)aType * 32.f, (float)aIndex * 32.f, 32.f, 32.f };
 }

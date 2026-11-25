@@ -22,5 +22,4 @@ public:
    Map* mMap = nullptr;
 
 };
-
 #endif // !GAME_MANAGER_HPP
